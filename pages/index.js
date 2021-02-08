@@ -1,22 +1,39 @@
 import Head from 'next/head'
 import styled from 'styled-components'
-import { useRouter } from 'next/router';
-
+import {useRouter} from 'next/router';
+import {useEffect, useState} from 'react';
 import en from '../locales/en/en.json';
 import de from '../locales/de/de.json';
 
+function useTranslation() {
+    const [t, setT] = useState(en)
+    const router = useRouter();
+    const {locale} = router;
+    useEffect(() => {
+        switch (locale) {
+            case 'de':
+                setT(() => de);
+                break;
+            default:
+                setT(() => en);
+                break;
+        }
+    }, [locale])
+    return t;
+}
+
 function Home() {
+   const t = useTranslation()
 
     const handleOnClick = async () => {
         console.log('working...')
     }
     const router = useRouter();
-    const { locale } = router;
-    const t = locale === 'en' ? en : de;
+    const {locale} = router;
 
     const changeLanguage = (e) => {
         const locale = e.target.value;
-        router.push(router.pathname, router.asPath, { locale });
+        router.push(router.pathname, router.asPath, {locale});
     };
 
     return (
