@@ -1,45 +1,49 @@
 import Head from 'next/head'
-import Header from '@components/Header'
-import Footer from '@components/Footer'
-import styled, {ThemeProvider} from 'styled-components'
-import {withTranslation, i18n} from '../i81n'
-import {THEME} from "../constants/theme";
-import GlobalStyle from "../styles/GlobalStyle";
-import TronWebProvider from "@components/TronWebProvider/TronWebProvider";
+import styled from 'styled-components'
+import { useRouter } from 'next/router';
 
-function Home({t}) {
+import en from '../locales/en/en.json';
+import de from '../locales/de/de.json';
+
+function Home() {
+
     const handleOnClick = async () => {
-        await i18n.changeLanguage(i18n.language === 'en' ? 'de' : 'en')
+        console.log('working...')
     }
+    const router = useRouter();
+    const { locale } = router;
+    const t = locale === 'en' ? en : de;
+
+    const changeLanguage = (e) => {
+        const locale = e.target.value;
+        router.push(router.pathname, router.asPath, { locale });
+    };
+
     return (
-        <ThemeProvider theme={THEME}>
-            <GlobalStyle/>
-            <TronWebProvider>
-                <Head>
-                    <title>Next.js Starter!</title>
-                    <link rel="icon" href="/favicon.ico"/>
-                </Head>
+        <>
+            <Head>
+                <title>Next.js Starter!</title>
+                <link rel="icon" href="/favicon.ico"/>
+            </Head>
 
-                <main>
-                    <Header title="Welcome to my app!"/>
-                    <p className="description">
-                        Get started by editing <code>pages/index.js</code>
-                    </p>
-                    <H1>Hello</H1>
-                    <H1>{t('test')}</H1>
-                    <button onClick={handleOnClick}>Language</button>
-                </main>
-
-                <Footer/>
-            </TronWebProvider>
-        </ThemeProvider>
+            <main>
+                <H1>Hello</H1>
+                <H1>{t.title}</H1>
+                <button onClick={handleOnClick}>Language</button>
+                <select
+                    onChange={changeLanguage}
+                    defaultValue={locale}
+                    className="text-white text-shadow-sm text-lg bg-transparent tracking-wide"
+                >
+                    <option className="text-black" value="en">EN</option>
+                    <option className="text-black" value="de">DE</option>
+                </select>
+            </main>
+        </>
     )
 }
 
-Home.getInitialProps = async () => ({
-    namespacesRequired: ['common'],
-})
-export default withTranslation('common')(Home)
+export default Home
 
 const H1 = styled.h1`
   color: black;

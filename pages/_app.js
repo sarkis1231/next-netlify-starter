@@ -1,14 +1,21 @@
 import '@styles/globals.css'
-import { appWithTranslation } from '../i81n'
-import App from 'next/app'
+import {ThemeProvider} from "styled-components";
+import {THEME} from "../constants/theme";
+import GlobalStyle from "@styles/GlobalStyle";
+import TronWebProvider from "@components/TronWebProvider/TronWebProvider";
 
-function Application({ Component, pageProps }) {
-  return <Component {...pageProps} />
+function Application({Component, pageProps}) {
+    return (
+        <>
+        <ThemeProvider theme={THEME}>
+            <GlobalStyle/>
+            <TronWebProvider>
+                <Component {...pageProps} />
+            </TronWebProvider>
+        </ThemeProvider>
+        </>
+    )
 }
 
-Application.getInitialProps = async (appContext) => {
-  const appProps = await App.getInitialProps(appContext)
-  return { ...appProps }
-}
-export default appWithTranslation(Application)
+export default Application
 
