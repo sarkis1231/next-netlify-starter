@@ -6,7 +6,6 @@ const withSvgr = require("next-svgr")
 
 
 const localeSubPaths = {
-    en: '/en',
     de: '/de'
 }
 

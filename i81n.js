@@ -6,8 +6,8 @@ console.log(localeSubPaths)
 module.exports = new NextI18Next({
     otherLanguages: ['de'],
     localeSubPaths,
-    // localeExtension: 'json',
-    // serverLanguageDetection: true,
-    // shallowRender: true,
+    localeExtension: 'json',
+    serverLanguageDetection: true,
+    shallowRender: true,
     localePath: path.resolve('./public/static/locales')
 })
